@@ -8,6 +8,10 @@ import svgIcon from '@/components/svgIcon/index.js';
 import 'view-design/dist/styles/iview.css';
 import '@/assets/fonts/font.css';
 
+if (process.env.NODE_ENV !== "production") {
+  window.utools = window.utools || utools;
+}
+
 Vue.prototype.utools = window.utools;
 
 Vue.use(ViewUI);
