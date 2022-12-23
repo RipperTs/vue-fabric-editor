@@ -1,6 +1,6 @@
 {
   "name": "svg",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -42,6 +42,8 @@
     "jest": "^27.0.5",
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
+    "utools-api-types": "^3.0.0",
+    "utools-helper": "^2.1.0",
     "vue-template-compiler": "^2.6.14"
   }
 }

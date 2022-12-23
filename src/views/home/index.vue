@@ -1,73 +1,84 @@
 <template>
   <div class="home">
-     <Layout >
-        <Header v-if="show">
-          <!-- 导入 -->
-          <import-JSON></import-JSON>
-          &nbsp;
-          <import-svg></import-svg>
-          &nbsp;
-          <import-img></import-img>
-          &nbsp;
-          <!-- 对齐方式 -->
-          <align></align>
-          &nbsp;
-          <flip></flip>
-          &nbsp;
-          <center-align></center-align>
-          &nbsp;
-          <group></group>
-          &nbsp;
-          <zoom></zoom>
-          &nbsp;
-          <lock></lock>
-          &nbsp;
-          <dele></dele>
-          &nbsp;
-          <clone></clone>
+    <myMask v-if="!isShowCanvas" />
+    <Layout>
+      <Header v-if="show">
+        <!-- 导入 -->
+        <import-JSON></import-JSON>
+        &nbsp;
+        <import-svg></import-svg>
+        &nbsp;
+        <import-img></import-img>
+        &nbsp;
+        <!-- 对齐方式 -->
+        <align></align>
+        &nbsp;
+        <flip></flip>
+        &nbsp;
+        <center-align></center-align>
+        &nbsp;
+        <group></group>
+        &nbsp;
+        <zoom></zoom>
+        &nbsp;
+        <lock></lock>
+        &nbsp;
+        <dele></dele>
+        &nbsp;
+        <clone></clone>
 
-          <div style="float:right">
-              <save></save>
-          </div>
-        </Header>
-        <Content style=" display: flex; height: calc(100vh - 64px);">
-          <div v-if="show" style="width: 380px; height: 100%; background:#fff; display: flex">
-              <Menu :active-name="menuActive" accordion @on-select="activeIndex => menuActive = activeIndex" width="80px">
-                <MenuItem :name="1" style="padding:10px"><Icon type="md-book" />模板</MenuItem>
-                <MenuItem :name="2" style="padding:10px"><Icon type="md-create" />元素</MenuItem>
-                <MenuItem :name="3" style="padding:10px"><Icon type="ios-build" />背景</MenuItem>
-              </Menu>
-              <div class="content">
-                  <!-- 生成模板 -->
-                  <div v-show="menuActive === 1" class="left-panel">
-                    <import-tmpl></import-tmpl>
-                  </div>
-                  <!-- 常用元素 -->
-                  <div v-show="menuActive === 2" class="left-panel">
-                    <tools></tools>
-                    <svgEl></svgEl>
-                  </div>
-                  <!-- 背景设置 -->
-                  <div v-show="menuActive === 3" class="left-panel">
-                    <set-size></set-size>
-                    <bg-bar></bg-bar>
-                  </div>
-
-              </div>
-          </div>
-          <!-- 画布区域 -->
-          <div style="width: 100%;position: relative; background:#F1F1F1;">
-            <div class="canvas-box">
-              <canvas id="canvas"></canvas>
+        <div style="float:right">
+          <save></save>
+        </div>
+      </Header>
+      <Content style=" display: flex; height: calc(100vh - 64px);">
+        <div v-if="show" style="width: 380px; height: 100%; background:#fff; display: flex">
+          <Menu :active-name="menuActive" accordion
+                @on-select="activeIndex => menuActive = activeIndex" width="80px">
+            <MenuItem :name="1" style="padding:10px">
+              <Icon type="md-book"/>
+              模板
+            </MenuItem>
+            <MenuItem :name="2" style="padding:10px">
+              <Icon type="md-create"/>
+              元素
+            </MenuItem>
+            <MenuItem :name="3" style="padding:10px">
+              <Icon type="ios-build"/>
+              背景
+            </MenuItem>
+          </Menu>
+          <div class="content">
+            <!-- 生成模板 -->
+            <div v-show="menuActive === 1" class="left-panel">
+              <import-tmpl></import-tmpl>
             </div>
+            <!-- 常用元素 -->
+            <div v-show="menuActive === 2" class="left-panel">
+              <tools></tools>
+              <svgEl></svgEl>
+            </div>
+            <!-- 背景设置 -->
+            <div v-show="menuActive === 3" class="left-panel">
+              <set-size></set-size>
+              <bg-bar></bg-bar>
+            </div>
+
           </div>
-          <!-- 属性区域 -->
-          <div style="width: 380px; height: 100%; padding:10px; overflow-y: auto; background:#fff">
-            <history v-if="show"></history>
-            <layer v-if="show"></layer>
-            <attribute v-if="show"></attribute>
+        </div>
+        <!-- 画布区域 -->
+        <div style="width: 100%;position: relative; background:#F1F1F1;">
+          <div class="canvas-box" v-show="isShowCanvas">
+            <canvas id="canvas"></canvas>
           </div>
-        </Content>
+        </div>
+        <!-- 属性区域 -->
+        <div style="width: 380px; height: 100%; padding:10px; overflow-y: auto; background:#fff">
+          <history v-if="show"></history>
+          <layer v-if="show"></layer>
+          <attribute v-if="show"></attribute>
+        </div>
+      </Content>
     </Layout>
   </div>
 </template>
@@ -104,9 +115,16 @@ import attribute from '@/components/attribute.vue'
 
 // 功能组件
 import EventHandle from '@/utils/eventHandler'
-import { hotKeyOnLRDU, hotKeyOnBackSpace, hotkeyOnCtrlC, hotkeyOnCtrlV } from './modules/hotkeysModules'
+import {
+  hotKeyOnBackSpace,
+  hotkeyOnCtrlC,
+  hotkeyOnCtrlV,
+  hotKeyOnLRDU
+} from './modules/hotkeysModules'
 
-import { fabric } from 'fabric';
+import {fabric} from 'fabric';
+
+import myMask from "@/components/myMask.vue";
 
 const event = new EventHandle()
 const canvas = {}
@@ -123,30 +141,58 @@ export default {
       show: false,
       select: null,
       isLock: false,
+      isShowCanvas: false,
     };
   },
   components: {
-    setSize,tools,bgBar,lock,layer, align, attribute, dele,importSvg,save,importJSON,clone,flip,importImg, importTmpl, centerAlign, group, zoom,svgEl,history
+    setSize,
+    tools,
+    bgBar,
+    lock,
+    layer,
+    align,
+    attribute,
+    dele,
+    importSvg,
+    save,
+    importJSON,
+    clone,
+    flip,
+    importImg,
+    importTmpl,
+    centerAlign,
+    group,
+    zoom,
+    svgEl,
+    history,
+    // eslint-disable-next-line vue/no-unused-components
+    myMask,
   },
-  created(){
-     this.$Spin.show();
+  created() {
+    this.$Spin.show();
   },
   mounted() {
-      this.canvas = canvas.c = new fabric.Canvas('canvas');
-      this.canvas.set('backgroundColor', '#fff')
-      this.show = true
-      this.$Spin.hide();
-      event.init(canvas.c)
-      hotKeyOnLRDU.call(this)
-      hotKeyOnBackSpace.call(this)
-      hotkeyOnCtrlC.call(this)
-      hotkeyOnCtrlV.call(this)
-      // 选中后的删除图标
-      this.setRemoveIcon()
-      this.setControlsStyle(fabric)
+    let that = this
+    this.canvas = canvas.c = new fabric.Canvas('canvas');
+    this.canvas.set('backgroundColor', '#fff')
+    this.show = true
+    this.$Spin.hide();
+    event.init(canvas.c)
+    hotKeyOnLRDU.call(this)
+    hotKeyOnBackSpace.call(this)
+    hotkeyOnCtrlC.call(this)
+    hotkeyOnCtrlV.call(this)
+    // 选中后的删除图标
+    this.setRemoveIcon()
+    this.setControlsStyle(fabric)
+    // 分离插件
+    utools.onPluginDetach(() => {
+      that.isShowCanvas = true
+    })
   },
-  methods:{
-    setRemoveIcon(){
+  methods: {
+
+    setRemoveIcon() {
       var deleteIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
       var img = document.createElement('img');
       img.src = deleteIcon;
@@ -176,7 +222,7 @@ export default {
         ctx.restore();
       }
     },
-    setControlsStyle(fabric){
+    setControlsStyle(fabric) {
       fabric.Object.prototype.transparentCorners = false;
       fabric.Object.prototype.cornerSize = 10;
       fabric.Object.prototype.cornerStrokeColor = '#C2C2C2';
@@ -190,29 +236,34 @@ export default {
 <style lang="less" scoped>
 
 /deep/ .ivu-layout-header {
-    padding: 0 10px;
+  padding: 0 10px;
 }
-.home,.ivu-layout{
+
+.home, .ivu-layout {
   height: 100vh;
 }
-.icon{
-   display: block;
+
+.icon {
+  display: block;
 }
-.canvas-box{
+
+.canvas-box {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-#canvas{
-  width: 300px;
-  height: 300px;
+
+#canvas {
+  width: 200px;
+  height: 200px;
   margin: 0 auto;
 }
-.content{
+
+.content {
   flex: 1;
   width: 200px;
-  padding:10px;
+  padding: 10px;
   padding-top: 0;
   height: 100%;
   overflow-y: auto;

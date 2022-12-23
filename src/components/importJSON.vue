@@ -11,7 +11,7 @@
     <Button @click="insert" size="small">导入文件</Button>
     <Modal
       v-model="showModal"
-      title="请选择"
+      title="请选择要导入的JSON文件"
       @on-ok="insertSvgFile"
       @on-cancel="(showModal = false), (jsonFile = null)"
     >

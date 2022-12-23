@@ -1,5 +1,5 @@
-# vue-fabric-editor
-[Demo](https://nihaojob.github.io/vue-fabric-editor/) 基于fabric.js和Vue的图片编辑器，可自定义字体、素材、设计模板。
+# vue-fabric-editor (uTools插件版)
+基于fabric.js和Vue的图片编辑器，可自定义字体、素材、设计模板。
 
 <p align="center"><img src="./src/assets/demo.png" /></p>
 

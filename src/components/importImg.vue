@@ -11,10 +11,13 @@
     <Button @click="insert" size="small">插入图片</Button>
     <Modal
       v-model="showModal"
-      title="请选择"
+      title="请选择要插入的图片"
       @on-ok="insertImgFile"
       @on-cancel="showModal = false,imgFile = null "
     >
+      <div class="img-preview" v-if="imgFile">
+        <img :src="imgFile" alt="图片">
+      </div>
       <Upload :before-upload="handleUpload" action="#">
         <Button icon="ios-cloud-upload-outline">选择图片文件</Button>
       </Upload>
@@ -72,4 +75,17 @@ export default {
 </script>
 
 <style scoped lang="less">
+.img-preview{
+  margin-bottom: 10px;
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+  border:1px solid #eee;
+  overflow: hidden;
+  padding: 5px;
+  img{
+    width: 100%;
+    height: 100%;
+  }
+}
 </style>

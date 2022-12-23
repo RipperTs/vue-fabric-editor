@@ -1,0 +1,33 @@
+{
+  "name": "设计编辑器",
+  "pluginName": "设计编辑器",
+  "description": "简约而不简单的图片设计编辑器，可自定义字体、素材、设计模板。",
+  "author": "ripper",
+  "homepage": "https://github.com/ripperts",
+  "version": "1.0.0",
+  "logo": "logo.png",
+  "main": "index.html",
+  "preload": "preload.js",
+  "development": {
+    "main": "http://127.0.0.1:3100",
+    "preload": "preload.js"
+  },
+  "pluginSetting": {
+    "single": false
+  },
+  "features": [
+    {
+      "code": "imgEditor",
+      "explain": "设计编辑器",
+      "cmds": [
+        "设计",
+        "图片编辑",
+        "img",
+        {
+          "type": "img",
+          "label": "图片编辑器"
+        }
+      ]
+    }
+  ]
+}

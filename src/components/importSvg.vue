@@ -11,7 +11,7 @@
   <Button @click="insert" size="small">插入SVG元素</Button>
   <Modal
         v-model="showModal"
-        title="请选择"
+        title="请选择插入SVG元素"
         @on-ok="insertSvg"
         @on-cancel="showModal = false">
         <RadioGroup v-model="insertType" type="button" button-style="solid" style="padding-bottom:  10px">

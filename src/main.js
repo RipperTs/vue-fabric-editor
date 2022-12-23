@@ -8,6 +8,8 @@ import svgIcon from '@/components/svgIcon/index.js';
 import 'view-design/dist/styles/iview.css';
 import '@/assets/fonts/font.css';
 
+Vue.prototype.utools = window.utools;
+
 Vue.use(ViewUI);
 Vue.use(VueClipboard)
 Vue.use(svgIcon);
@@ -15,7 +17,13 @@ Vue.use(svgIcon);
 Vue.prototype.$http = axios
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  render: (h) => h(App),
-}).$mount('#app');
+window.utools.onPluginReady(() => {
+
+  console.log("插件装配完成，已准备好");
+
+  new Vue({
+    router,
+    render: (h) => h(App),
+  }).$mount('#app');
+
+});
