@@ -5,5 +5,6 @@ module.exports = defineConfig({
   productionSourceMap: false,
   devServer: {
     port: 3100,
-  }
+  },
+  outputDir: './data/dist'
 });
