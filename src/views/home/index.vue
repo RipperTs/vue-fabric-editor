@@ -68,7 +68,7 @@
         </div>
         <!-- 画布区域 -->
         <div style="width: 100%;position: relative; background:#F1F1F1;">
-          <div class="canvas-box" v-show="isShowCanvas">
+          <div class="canvas-box">
             <canvas id="canvas"></canvas>
           </div>
         </div>
@@ -172,7 +172,6 @@ export default {
     this.$Spin.show();
   },
   mounted() {
-    let that = this
     this.canvas = canvas.c = new fabric.Canvas('canvas');
     this.canvas.set('backgroundColor', '#fff')
     this.show = true
@@ -185,10 +184,7 @@ export default {
     // 选中后的删除图标
     this.setRemoveIcon()
     this.setControlsStyle(fabric)
-    // 分离插件
-    utools.onPluginDetach(() => {
-      that.isShowCanvas = true
-    })
+    this.isShowCanvas = this.$pluginDetach
   },
   methods: {
 

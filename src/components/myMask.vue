@@ -2,7 +2,7 @@
   <div class="mask-main">
     <div class="tips-box">
       <Alert show-icon>
-        为了更好的使用此插件,您必须进行初始化uTools设置:
+        为了更好的使用此插件,您必须进行初始化设置:
         <template #desc>首次按照以下步骤设置好之后,后续不必再重复设置啦~</template>
       </Alert>
     </div>
@@ -14,6 +14,9 @@
     </div>
     <div class="tips-box">
       <Alert type="warning">3. 最后,将插件分离出来的插件窗口调整合适的大小以内容完整适配为准</Alert>
+    </div>
+    <div class="tips-box">
+      <Alert type="success">至此,设置完成! 重新打开插件试试吧~</Alert>
     </div>
   </div>
 </template>

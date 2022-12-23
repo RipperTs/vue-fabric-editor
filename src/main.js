@@ -20,10 +20,15 @@ Vue.use(svgIcon);
 
 Vue.prototype.$http = axios
 Vue.config.productionTip = false;
+Vue.prototype.$pluginDetach = false;
 
-window.utools.onPluginReady(() => {
+window.utools.onPluginEnter(({code, type, payload}) => {
 
-  console.log("插件装配完成，已准备好");
+  console.log('用户进入插件应用', code, type, payload)
+
+  Vue.prototype.$pluginCode = code
+  Vue.prototype.$pluginType = type
+  Vue.prototype.$pluginPayload = payload
 
   new Vue({
     router,
@@ -31,3 +36,8 @@ window.utools.onPluginReady(() => {
   }).$mount('#app');
 
 });
+
+window.utools.onPluginDetach(() => {
+  console.log('分离插件')
+  Vue.prototype.$pluginDetach = true
+})
